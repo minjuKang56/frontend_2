@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:padding="16dp">
+
+    <!-- 채팅 상단 타이틀 -->
+    <TextView
+        android:id="@+id/chatHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="판매자와의 채팅"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp" />
+
+    <!-- 메시지 리스트 예시 (추후 확장 가능) -->
+    <ScrollView
+        android:id="@+id/messageScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/chatHeader"
+        android:layout_above="@id/messageInputSection"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/messageContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
+
+    <!-- 하단 입력 영역 -->
+    <LinearLayout
+        android:id="@+id/messageInputSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingVertical="8dp">
+
+        <EditText
+            android:id="@+id/messageInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="메시지를 입력하세요"
+            android:padding="12dp"
+            android:background="@drawable/search_background"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="전송"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="#E3EBB7"
+            android:textColor="#000000" />
+    </LinearLayout>
+
+</RelativeLayout>

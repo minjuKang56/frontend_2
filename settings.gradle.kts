@@ -14,12 +14,11 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
     }
 }
 
-rootProject.name = "Chaekimjeo7"
+rootProject.name = "chaekimjeo7"
 include(":app")
  

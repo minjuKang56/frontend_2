@@ -2,7 +2,10 @@ package com.example.chaekimjeo7;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +26,8 @@ public class BookListByengineeringActivity extends AppCompatActivity {
     private RecyclerView bookRecyclerView;
     private BookAdapter bookAdapter;
     private List<Book> bookList;
-    private Button sortPopular, sortLowPrice, sortRecent;
+    private Button sortLowPrice, sortRecent;
+    private EditText searchInput;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,35 +41,43 @@ public class BookListByengineeringActivity extends AppCompatActivity {
             pageTitle.setText(categoryName);
         }
 
+        // ✅ 검색창 연결
+        searchInput = findViewById(R.id.searchInput);
+
         // ✅ 리사이클러뷰 세팅
         bookRecyclerView = findViewById(R.id.bookRecyclerView);
         bookRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // 샘플 데이터
         bookList = new ArrayList<>();
-        bookList.add(new Book("객체지향 프로그래밍", 15000, 15284, R.drawable.book_sample1));
-        bookList.add(new Book("인공지능과 기계학습", 16000, 16000, R.drawable.book_sample2));
-        bookList.add(new Book("자료구조", 10000, 14000, R.drawable.book_sample3));
-        bookList.add(new Book("논리회로", 10000, 14000, R.drawable.book_sample4));
-        bookList.add(new Book("객체지향 프로그래밍", 10000, 14000, R.drawable.book_sample5));
+        bookList.add(new Book("객체지향 프로그래밍", 15000, 28000, 15284, R.drawable.book_sample1, "김스베틀라나", "공과대학"));
+        bookList.add(new Book("인공지능과 기계학습", 16000, 24000, 16000, R.drawable.book_sample2, "홍길동", "공과대학"));
+        bookList.add(new Book("자료구조", 10000, 20000, 14000, R.drawable.book_sample3, "이영희", "공과대학"));
+        bookList.add(new Book("논리회로", 10000, 22000, 14000, R.drawable.book_sample4, "최철수", "공과대학"));
+        bookList.add(new Book("객체지향 프로그래밍", 10000, 28000, 14000, R.drawable.book_sample5, "김스베틀라나", "공과대학"));
 
+        // ✅ 어댑터 세팅
         bookAdapter = new BookAdapter(bookList, this);
         bookRecyclerView.setAdapter(bookAdapter);
 
+        // ✅ 검색 기능 연동 (실시간 필터링)
+        searchInput.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                bookAdapter.filter(s.toString());
+            }
+        });
+
         // ✅ 정렬 버튼
-        sortPopular = findViewById(R.id.sortPopular);
         sortLowPrice = findViewById(R.id.sortLowPrice);
         sortRecent = findViewById(R.id.sortRecent);
-
-        sortPopular.setOnClickListener(v -> {
-            highlightSelectedTab(sortPopular);
-            // 기본 정렬 유지
-        });
 
         sortLowPrice.setOnClickListener(v -> {
             highlightSelectedTab(sortLowPrice);
 
-            // ✅ API 21 호환 정렬 방식
             Collections.sort(bookList, new Comparator<Book>() {
                 @Override
                 public int compare(Book o1, Book o2) {
@@ -73,16 +85,20 @@ public class BookListByengineeringActivity extends AppCompatActivity {
                 }
             });
 
-            bookAdapter.notifyDataSetChanged();
+            bookAdapter = new BookAdapter(bookList, this);         // 정렬된 리스트로 새로 초기화
+            bookRecyclerView.setAdapter(bookAdapter);               // 새 어댑터 연결
+            bookAdapter.filter(searchInput.getText().toString());   // 검색 필터 재적용
         });
 
         sortRecent.setOnClickListener(v -> {
             highlightSelectedTab(sortRecent);
-            Collections.reverse(bookList);
-            bookAdapter.notifyDataSetChanged();
+
+            Collections.reverse(bookList);                          // 최신순 정렬
+            bookAdapter = new BookAdapter(bookList, this);
+            bookRecyclerView.setAdapter(bookAdapter);
+            bookAdapter.filter(searchInput.getText().toString());
         });
 
-        highlightSelectedTab(sortPopular);
 
         // ✅ 하단 네비게이션 바 처리
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
@@ -112,7 +128,7 @@ public class BookListByengineeringActivity extends AppCompatActivity {
     }
 
     private void highlightSelectedTab(Button selected) {
-        Button[] allTabs = {sortPopular, sortLowPrice, sortRecent};
+        Button[] allTabs = {sortLowPrice, sortRecent};
         for (Button btn : allTabs) {
             btn.setBackgroundResource(R.drawable.tab_unselected);
             btn.setTextColor(getResources().getColor(android.R.color.black));

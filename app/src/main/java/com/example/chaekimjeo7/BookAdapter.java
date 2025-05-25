@@ -7,18 +7,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder> {
 
-    private List<Book> bookList;
+    private List<Book> originalList;     // 전체 리스트
+    private List<Book> filteredList;     // 필터링된 리스트
     private Context context;
 
     public BookAdapter(List<Book> bookList, Context context) {
-        this.bookList = bookList;
+        this.originalList = new ArrayList<>(bookList);  // 원본 리스트 복사
+        this.filteredList = new ArrayList<>(bookList);  // 처음엔 전체가 필터링된 리스트
         this.context = context;
+    }
+
+    // 필터 함수: 제목 또는 교수명에 키워드 포함 시 필터링
+    public void filter(String keyword) {
+        filteredList.clear();
+        if (keyword.isEmpty()) {
+            filteredList.addAll(originalList);
+        } else {
+            for (Book book : originalList) {
+                if (book.getTitle().toLowerCase().contains(keyword.toLowerCase()) ||
+                        book.getProfessor().toLowerCase().contains(keyword.toLowerCase())) {
+                    filteredList.add(book);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -30,39 +51,46 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull BookViewHolder holder, int position) {
-        Book book = bookList.get(position);
+        Book book = filteredList.get(position);
+
         holder.title.setText(book.getTitle());
-        holder.price.setText(book.getSalePrice() + "원");
-        holder.market.setText("시세 " + book.getMarketPrice() + "원");
+        holder.salePrice.setText(book.getSalePrice() + "원");
+        holder.originalPrice.setText("정가 " + book.getOriginalPrice() + "원");
+
+        String meta = "시세 " + book.getMarketPrice() + "원 · " + book.getProfessor() + " · " + book.getCategory();
+        holder.metaInfo.setText(meta);
+
         holder.image.setImageResource(book.getImageResId());
 
-        // ✅ 책 클릭 시 상세 페이지로 이동 + 데이터 전달
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, BookSellDetailActivity.class);
             intent.putExtra("title", book.getTitle());
-            intent.putExtra("salePrice", book.getSalePrice());
-            intent.putExtra("marketPrice", book.getMarketPrice());
-            intent.putExtra("imageResId", book.getImageResId());
+            intent.putExtra("price", String.valueOf(book.getSalePrice()));
+            intent.putExtra("officialPrice", String.valueOf(book.getOriginalPrice()));
+            intent.putExtra("description", ""); // 필요 시 수정
+            intent.putExtra("imageUri", ""); // 필요 시 수정
+            intent.putExtra("professor", book.getProfessor());
+            intent.putExtra("category", book.getCategory());
             context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return bookList.size();
+        return filteredList.size();
     }
 
     public static class BookViewHolder extends RecyclerView.ViewHolder {
-        TextView title, price, market;
+        TextView title, salePrice, originalPrice, metaInfo;
         ImageView image;
 
         public BookViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.bookTitle);
-            price = itemView.findViewById(R.id.bookPrice);
-            market = itemView.findViewById(R.id.bookMarket);
+            salePrice = itemView.findViewById(R.id.bookSalePrice);
+            originalPrice = itemView.findViewById(R.id.bookOriginalPrice);
+            metaInfo = itemView.findViewById(R.id.bookMetaInfo);
             image = itemView.findViewById(R.id.bookImage);
         }
     }
 }
-

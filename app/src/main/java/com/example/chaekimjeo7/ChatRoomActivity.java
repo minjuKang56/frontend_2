@@ -2,11 +2,11 @@ package com.example.chaekimjeo7;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +20,7 @@ public class ChatRoomActivity extends AppCompatActivity {
     private List<ChatMessage> messageList;
     private EditText messageEditText;
     private ImageView sendButton;
+    private TextView confirmTransactionButton; // ✅ Button → TextView로 변경
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +59,21 @@ public class ChatRoomActivity extends AppCompatActivity {
         sendButton.setOnClickListener(v -> {
             String text = messageEditText.getText().toString().trim();
             if (!text.isEmpty()) {
-                // 내 메시지 추가
                 ChatMessage newMessage = new ChatMessage(text, true);
                 messageList.add(newMessage);
                 adapter.notifyDataSetChanged();
                 messageEditText.setText("");
 
-                // 스크롤 아래로 이동
                 messageListView.post(() -> messageListView.setSelection(adapter.getCount() - 1));
             }
+        });
+
+        // ✅ ⑤ 거래확정 버튼 처리 (TextView → setOnClickListener)
+        confirmTransactionButton = findViewById(R.id.confirmTransactionButton);
+        confirmTransactionButton.setOnClickListener(v -> {
+            Toast.makeText(this, "거래가 확정되었습니다.", Toast.LENGTH_SHORT).show();
+
+            // TODO: 구매자/판매자 내역 저장 로직
         });
     }
 }

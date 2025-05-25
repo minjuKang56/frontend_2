@@ -6,17 +6,13 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- 카테고리 타이틀 텍스트뷰 (동적으로 값 설정됨) -->
+    <!-- (숨김 처리) 카테고리 타이틀 텍스트뷰 -->
     <TextView
         android:id="@+id/pageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="카테고리명"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="#000000"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp" />
+        android:text=""
+        android:visibility="gone" />
 
     <!-- 상단 검색창 및 정렬버튼 -->
     <LinearLayout
@@ -94,5 +90,4 @@
         app:labelVisibilityMode="unlabeled"
         app:itemIconTint="@color/bottom_nav_color_selector"
         app:itemTextColor="@color/bottom_nav_color_selector" />
-
 </RelativeLayout>

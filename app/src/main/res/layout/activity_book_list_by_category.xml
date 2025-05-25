@@ -39,15 +39,6 @@
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="8dp"
             android:importantForAccessibility="no" />
-
-        <ImageButton
-            android:id="@+id/filterButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_filter"
-            android:background="@android:color/transparent"
-            android:layout_marginStart="8dp"
-            android:contentDescription="정렬 버튼" />
     </LinearLayout>
 
     <!-- 정렬 탭 -->

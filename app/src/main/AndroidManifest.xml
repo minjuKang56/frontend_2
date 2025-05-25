@@ -36,11 +36,13 @@
 
         <!-- 교재 상세 화면 -->
         <activity
-            android:name=".BookDetailActivity"
+            android:name=".BookSellDetailActivity"
             android:theme="@style/Theme.Chaekimjeo7"/>
 
         <!-- 교재 목록 (카테고리별) -->
-        <activity android:name=".BookListByCategoryActivity" />
+        <activity android:name=".BookListByengineeringActivity" />
+        <activity android:name=".BookListByLiberalActivity" />
+        <activity android:name=".BookListByCertificateActivity" />
 
         <!-- 단일 채팅 기능 (판매자와의 문의용) -->
         <activity android:name=".ChatActivity" />

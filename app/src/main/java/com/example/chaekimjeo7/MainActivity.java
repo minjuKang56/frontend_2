@@ -3,7 +3,6 @@ package com.example.chaekimjeo7;
 import android.os.Bundle;
 import android.widget.GridView;
 import android.content.Intent;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         // 카테고리 클릭 시 해당 Activity로 이동
         categoryGrid.setOnItemClickListener((parent, view, position, id) -> {
             CategoryItem selected = categories.get(position);
-            Intent intent = new Intent(MainActivity.this, BookListByCategoryActivity.class);
+            Intent intent = new Intent(MainActivity.this, BookListByengineeringActivity.class);
             intent.putExtra("category", selected.getName());
             startActivity(intent);
         });

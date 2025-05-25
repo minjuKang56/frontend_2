@@ -38,7 +38,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
         // ✅ 책 클릭 시 상세 페이지로 이동 + 데이터 전달
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, BookDetailActivity.class);
+            Intent intent = new Intent(context, BookSellDetailActivity.class);
             intent.putExtra("title", book.getTitle());
             intent.putExtra("salePrice", book.getSalePrice());
             intent.putExtra("marketPrice", book.getMarketPrice());

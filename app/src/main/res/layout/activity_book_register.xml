@@ -19,8 +19,8 @@
             <!-- 뒤로가기 버튼 -->
             <ImageButton
                 android:id="@+id/backButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:src="@drawable/ic_back"
                 android:background="@android:color/transparent"
                 android:contentDescription="뒤로가기"
@@ -67,13 +67,33 @@
                 android:hint="교수명"
                 android:inputType="text" />
 
-            <EditText
-                android:id="@+id/editPrice"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:minHeight="50dp"
-                android:hint="가격"
-                android:inputType="number" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:weightSum="2">
+
+                <EditText
+                    android:id="@+id/editOfficialPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:hint="정가"
+                    android:inputType="number" />
+
+                <View
+                    android:layout_width="8dp"
+                    android:layout_height="0dp" />
+
+                <EditText
+                    android:id="@+id/editPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:hint="판매가"
+                    android:inputType="number" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/editDescription"

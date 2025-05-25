@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,9 +12,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 
 public class BookRegisterActivity extends AppCompatActivity {
@@ -61,27 +63,30 @@ public class BookRegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(v -> {
             EditText editTitle = findViewById(R.id.editTitle);
             EditText editProfessor = findViewById(R.id.editProfessor);
-            EditText editPrice = findViewById(R.id.editPrice);
+            EditText editOfficialPrice = findViewById(R.id.editOfficialPrice);  // 정가
+            EditText editPrice = findViewById(R.id.editPrice);                  // 판매가
             EditText editDescription = findViewById(R.id.editDescription);
 
             String title = editTitle.getText().toString();
             String professor = editProfessor.getText().toString();
-            String price = editPrice.getText().toString();
+            String officialPrice = editOfficialPrice.getText().toString();     // 정가 추출
+            String price = editPrice.getText().toString();                     // 판매가 추출
             String description = editDescription.getText().toString();
             String category = spinnerCategory.getSelectedItem().toString();
 
-            if (title.isEmpty() || price.isEmpty() || description.isEmpty() || imageUris.isEmpty()) {
+            if (title.isEmpty() || officialPrice.isEmpty() || price.isEmpty() || description.isEmpty() || imageUris.isEmpty()) {
                 Toast.makeText(this, "모든 필드를 채우고 이미지를 최소 1장 업로드해주세요.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            Toast.makeText(this, "교재 등록 요청을 전송합니다 (서버 없음).", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "교재 등록", Toast.LENGTH_SHORT).show();
 
-            // 👉 상세페이지로 이동하는 Intent 추가!
-            Intent intent = new Intent(BookRegisterActivity.this, BookDetailActivity.class);
+            // 상세페이지로 이동
+            Intent intent = new Intent(BookRegisterActivity.this, BookSellDetailActivity.class);
             intent.putExtra("title", title);
             intent.putExtra("professor", professor);
-            intent.putExtra("price", price);
+            intent.putExtra("officialPrice", officialPrice);  // 정가 전달
+            intent.putExtra("price", price);                  // 판매가 전달
             intent.putExtra("description", description);
             intent.putExtra("category", category);
             intent.putExtra("imageUri", imageUris.get(0).toString()); // 첫 번째 이미지만 전달
@@ -89,7 +94,7 @@ public class BookRegisterActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // 하단 네비게이션 처리 (예시)
+        // 하단 네비게이션 처리
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             // TODO: 네비게이션 동작 구현

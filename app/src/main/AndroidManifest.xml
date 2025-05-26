@@ -34,13 +34,18 @@
         <!-- 교재 등록 화면 -->
         <activity android:name=".BookRegisterActivity" />
 
-        <!-- 교재 상세 화면 -->
+        <!-- 교재 상세(구매) 화면 -->
         <activity
             android:name=".BookSellDetailActivity"
             android:theme="@style/Theme.Chaekimjeo7"/>
 
-        <!-- 교재 목록 (카테고리별) -->
-        <activity android:name=".BookListByengineeringActivity" />
+        <!-- 교재 상세(판매) 화면 -->
+        <activity android:name=".BookPurchaseDetailActivity" />
+
+        <!-- 교재 목록 (전체) -->
+        <activity android:name=".BookListAllActivity" />
+
+        <activity android:name=".BookListByCategoryActivity" />
 
         <!-- 단일 채팅 기능 (판매자와의 문의용) -->
         <activity android:name=".ChatActivity" />

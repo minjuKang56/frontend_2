@@ -27,18 +27,21 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     }
 
     // 필터 함수: 제목 또는 교수명에 키워드 포함 시 필터링
-    public void filter(String keyword) {
+    public void filter(String keyword, boolean byTitle) {
         filteredList.clear();
+
         if (keyword.isEmpty()) {
             filteredList.addAll(originalList);
         } else {
             for (Book book : originalList) {
-                if (book.getTitle().toLowerCase().contains(keyword.toLowerCase()) ||
-                        book.getProfessor().toLowerCase().contains(keyword.toLowerCase())) {
+                if (byTitle && book.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
+                    filteredList.add(book);
+                } else if (!byTitle && book.getProfessor().toLowerCase().contains(keyword.toLowerCase())) {
                     filteredList.add(book);
                 }
             }
         }
+
         notifyDataSetChanged();
     }
 
@@ -63,14 +66,21 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         holder.image.setImageResource(book.getImageResId());
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, BookSellDetailActivity.class);
+            Intent intent;
+            if (book.isMyPost()) {
+                intent = new Intent(context, BookSellDetailActivity.class);
+            } else {
+                intent = new Intent(context, BookPurchaseDetailActivity.class);
+            }
+
             intent.putExtra("title", book.getTitle());
             intent.putExtra("price", String.valueOf(book.getSalePrice()));
             intent.putExtra("officialPrice", String.valueOf(book.getOriginalPrice()));
-            intent.putExtra("description", ""); // 필요 시 수정
-            intent.putExtra("imageUri", ""); // 필요 시 수정
+            intent.putExtra("description", book.getConditionDescription());  // ✅ 수정된 부분
+            intent.putExtra("imageUri", "");
             intent.putExtra("professor", book.getProfessor());
             intent.putExtra("category", book.getCategory());
+
             context.startActivity(intent);
         });
     }

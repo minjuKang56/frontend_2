@@ -35,6 +35,8 @@ public class BookSellDetailActivity extends AppCompatActivity {
         discountRateView = findViewById(R.id.discountRate); // ✅ 할인율 텍스트뷰 연결
         bookDescriptionView = findViewById(R.id.bookDescription);
         originalPriceView = findViewById(R.id.textOriginalPrice);
+        ImageButton backButton = findViewById(R.id.backButton);
+
 
         // ✅ 찜 아이콘과 문의 버튼 비활성화
         ImageView likeIcon = findViewById(R.id.bookLikeIcon);
@@ -54,6 +56,9 @@ public class BookSellDetailActivity extends AppCompatActivity {
         String officialPriceStr = intent.getStringExtra("officialPrice"); // ✅ 정가 받기
         String description = intent.getStringExtra("description");
         String imageUriStr = intent.getStringExtra("imageUri");
+
+        // 뒤로가기 버튼 동작 처리
+        backButton.setOnClickListener(v -> finish()); // ✅ 추가
 
         // 🧮 할인율 계산
         String discountRateText = "";

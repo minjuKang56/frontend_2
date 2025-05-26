@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.GridView;
 import android.content.Intent;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        ImageView searchIcon = findViewById(R.id.registerIcon);
+
+        searchIcon.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, BookListAllActivity.class);
+            startActivity(intent);
+        });
+
         // 시스템 바 패딩 적용
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -63,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         // 카테고리 클릭 시 해당 Activity로 이동
         categoryGrid.setOnItemClickListener((parent, view, position, id) -> {
             CategoryItem selected = categories.get(position);
-            Intent intent = new Intent(MainActivity.this, BookListByengineeringActivity.class);
+            Intent intent = new Intent(MainActivity.this, BookListByCategoryActivity.class);
             intent.putExtra("category", selected.getName());
             startActivity(intent);
         });

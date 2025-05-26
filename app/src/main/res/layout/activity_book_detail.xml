@@ -229,7 +229,7 @@
                 android:id="@+id/sellerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="강민주"
+                android:text="이기연"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 

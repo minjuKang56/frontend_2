@@ -1,25 +1,28 @@
 package com.example.chaekimjeo7;
 
 public class ChatRoomItem {
-    private String userName;
+    private String roomId;
+    private String otherUserId;
+    private String otherUserName;
+    private String otherUserProfileImage;
     private String lastMessage;
-    private String date;
+    private String lastSentAt;
 
-    public ChatRoomItem(String userName, String lastMessage, String date) {
-        this.userName = userName;
+    public ChatRoomItem(String roomId, String otherUserId, String otherUserName,
+                        String otherUserProfileImage, String lastMessage, String lastSentAt) {
+        this.roomId = roomId;
+        this.otherUserId = otherUserId;
+        this.otherUserName = otherUserName;
+        this.otherUserProfileImage = otherUserProfileImage;
         this.lastMessage = lastMessage;
-        this.date = date;
+        this.lastSentAt = lastSentAt;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getLastMessage() {
-        return lastMessage;
-    }
-
-    public String getDate() {
-        return date;
-    }
+    public String getRoomId() { return roomId; }
+    public String getOtherUserId() { return otherUserId; }
+    public String getOtherUserName() { return otherUserName; }
+    public String getOtherUserProfileImage() { return otherUserProfileImage; }
+    public String getLastMessage() { return lastMessage; }
+    public String getLastSentAt() { return lastSentAt; }
 }
+

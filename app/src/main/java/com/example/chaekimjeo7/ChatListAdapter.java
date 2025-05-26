@@ -8,26 +8,30 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatListAdapter extends BaseAdapter {
 
     private Context context;
-    private List<ChatRoomItem> chatList;
+    private List<ChatRoomItem> chatRoomList;
 
-    public ChatListAdapter(Context context, List<ChatRoomItem> chatList) {
+    public ChatListAdapter(Context context, List<ChatRoomItem> chatRoomList) {
         this.context = context;
-        this.chatList = chatList;
+        this.chatRoomList = chatRoomList;
     }
 
     @Override
     public int getCount() {
-        return chatList.size();
+        return chatRoomList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return chatList.get(position);
+        return chatRoomList.get(position);
     }
 
     @Override
@@ -35,25 +39,51 @@ public class ChatListAdapter extends BaseAdapter {
         return position;
     }
 
+    // 뷰홀더 패턴
+    static class ViewHolder {
+        ImageView imageProfile;
+        TextView textUserName;
+        TextView textLastMessage;
+        TextView textLastSentAt;
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View item = convertView;
-        if (item == null) {
-            item = LayoutInflater.from(context).inflate(R.layout.chat_list_item, parent, false);
+        ViewHolder holder;
+        ChatRoomItem item = chatRoomList.get(position);
+
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.chat_list_item, parent, false);
+            holder = new ViewHolder();
+            holder.imageProfile = convertView.findViewById(R.id.imageProfile);
+            holder.textUserName = convertView.findViewById(R.id.textUserName);
+            holder.textLastMessage = convertView.findViewById(R.id.textLastMessage);
+            holder.textLastSentAt = convertView.findViewById(R.id.textLastSentAt);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        ImageView profileImage = item.findViewById(R.id.profileImage);
-        TextView userName = item.findViewById(R.id.userName);
-        TextView lastMessage = item.findViewById(R.id.lastMessage);
-        TextView messageDate = item.findViewById(R.id.messageDate);
+        // 데이터 바인딩
+        holder.textUserName.setText(item.getOtherUserName());
+        holder.textLastMessage.setText(item.getLastMessage());
+        holder.textLastSentAt.setText(formatDate(item.getLastSentAt()));
 
-        ChatRoomItem chat = chatList.get(position);
-        userName.setText(chat.getUserName());
-        lastMessage.setText(chat.getLastMessage());
-        messageDate.setText(chat.getDate());
+        holder.imageProfile.setImageResource(R.drawable.ic_profile_placeholder);
+        return convertView;
+    }
 
-        // TODO: Glide/Picasso로 프로필 이미지 적용 가능 (지금은 기본 아이콘)
+    // 날짜 포맷 변환: "2025-04-08T10:30:00" → "4월 8일 10:30"
+    private String formatDate(String isoDate) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.KOREA);
+            Date date = inputFormat.parse(isoDate);
 
-        return item;
+            SimpleDateFormat outputFormat = new SimpleDateFormat("M월 d일 HH:mm", Locale.KOREA);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ""; // 에러 시 빈 문자열 반환
+        }
     }
 }

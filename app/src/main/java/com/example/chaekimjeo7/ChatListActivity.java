@@ -25,9 +25,25 @@ public class ChatListActivity extends AppCompatActivity {
         chatListView = findViewById(R.id.chatListView);
         chatRooms = new ArrayList<>();
 
-        // 더미 데이터 (나중에 API 연결로 대체 가능)
-        chatRooms.add(new ChatRoomItem("이기연", "안녕하세요 책 구매하고 싶어요", "5월 3일"));
-        chatRooms.add(new ChatRoomItem("정예원", "안녕하세요!", "5월 3일"));
+        // 더미
+        chatRooms.add(new ChatRoomItem(
+                "room-001",               // roomId
+                "user-001",               // otherUserId
+                "이기연",                 // otherUserName
+                "https://example.com/p1.jpg", // otherUserProfileImage
+                "안녕하세요 책 구매하고 싶어요", // lastMessage
+                "2025-05-03T10:30:00"     // lastSentAt
+        ));
+
+        chatRooms.add(new ChatRoomItem(
+                "room-002",
+                "user-002",
+                "정예원",
+                "https://example.com/p2.jpg",
+                "안녕하세요!",
+                "2025-05-03T11:00:00"
+        ));
+
 
         ChatListAdapter adapter = new ChatListAdapter(this, chatRooms);
         chatListView.setAdapter(adapter);
@@ -36,7 +52,7 @@ public class ChatListActivity extends AppCompatActivity {
         chatListView.setOnItemClickListener((AdapterView<?> parent, android.view.View view, int position, long id) -> {
             ChatRoomItem selectedChat = chatRooms.get(position);
             Intent intent = new Intent(ChatListActivity.this, ChatRoomActivity.class);
-            intent.putExtra("userName", selectedChat.getUserName());
+            intent.putExtra("userName", selectedChat.getOtherUserName());
             startActivity(intent);
         });
 

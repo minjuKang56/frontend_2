@@ -1,6 +1,5 @@
 package com.example.chaekimjeo7;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,19 +37,22 @@ public class CategoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View gridItem = convertView;
-        if (gridItem == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            gridItem = inflater.inflate(R.layout.item_category, parent, false);
-        }
+        CategoryItem item = categoryList.get(position);
+
+        // ✅ 전공 vs 기타 구분해서 다른 레이아웃 사용
+        int layoutRes = item.getType().equals("etc")
+                ? R.layout.item_category_etc
+                : R.layout.item_category;
+
+        View gridItem = LayoutInflater.from(context).inflate(layoutRes, parent, false);
 
         ImageView icon = gridItem.findViewById(R.id.categoryIcon);
         TextView label = gridItem.findViewById(R.id.categoryText);
 
-        CategoryItem item = categoryList.get(position);
         icon.setImageResource(item.getImageResId());
         label.setText(item.getName());
 
         return gridItem;
     }
 }
+
